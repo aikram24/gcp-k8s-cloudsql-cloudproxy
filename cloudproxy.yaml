@@ -1,0 +1,39 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: demoapp
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: demoapp
+    spec:
+      containers:
+      - image: b.gcr.io/cloudsql-docker/gce-proxy:latest
+        imagePullPolicy: Always
+        name: cloudsqlproxy
+        command:
+        - /cloud_sql_proxy
+        - -dir=/cloudsql
+        - -instances=<Instance connection name>=tcp:0.0.0.0:3307
+        - -credential_file=/credentials/credentials.json
+        - term_timeout=10s
+        lifecycle:
+          preStop:
+            exec:
+              command: ['sleep', '10']
+        ports:
+        - name: port-database1
+          containerPort: 3307
+        volumeMounts:
+        - mountPath: /cloudsql
+          name: cloudsql
+        - mountPath: /credentials
+          name: service-account-token
+      volumes:
+      - name: cloudsql
+        emptyDir:
+      - name: service-account-token
+        secret:
+          secretName: service-account-token
