@@ -20,7 +20,7 @@ spec:
         command:
         - /cloud_sql_proxy
         - -dir=/cloudsql
-        - -instances=hum-humshared-ea-eca-sbx:us-central1:demo-app=tcp:0.0.0.0:3307
+        - -instances=<Instance Name>=tcp:0.0.0.0:3307
         - -credential_file=/credentials/credentials.json
         # set term_timeout if require graceful handling of shutdown
         # NOTE: proxy will stop accepting new connections; only wait on existing connections
