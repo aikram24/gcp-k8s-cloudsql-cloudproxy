@@ -1,21 +1,21 @@
-apiVersion: apps/v1
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: wordpress
   labels:
-    app: demoapp
+    app: cloudsqlproxy
 spec:
   selector:
     matchLabels:
-      app: demoapp
+      app: cloudsqlproxy
   template:
     metadata:
       labels:
-        app: demoapp
+        app: cloudsqlproxy
     spec:
       containers:
-        - name: web
-          image: wordpress:4.8.2-apache
+        - name: wordpress
+          image: wordpress
           ports:
             - containerPort: 80
           env:
@@ -25,3 +25,4 @@ spec:
               value: admin
             - name: WORDPRESS_DB_PASSWORD
               value: admin
+            # [END cloudsql_secrets]
